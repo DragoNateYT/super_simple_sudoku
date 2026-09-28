@@ -1,0 +1,16 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Super Simple Sudoku",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "SSS",
+  "start_url": "https://dragonateyt.github.io/super_simple_sudoku/",
+  "theme_color": "#ffffff",
+  "description": "A super simple Sudoku app for you to play at your own leisure to your heart's content. No tracking, no goals, just play as much or as little as you want!",
+  "lang": "en",
+  "categories": [
+    "games"
+  ]
+}
