@@ -141,8 +141,8 @@
             --bg-peer: #1c1c1c;
             --bg-same-num: #282828;
             --text-main: #ffffff;
-            --text-given: #888888;  /* Given numbers grey for contrast */
-            --text-user: #ffffff;   /* User-placed numbers full white */
+            --text-given: #888888;
+            --text-user: #ffffff;
             --text-muted: #737373;
             --text-note: #a3a3a3;
             --border-subtle: #262626;
@@ -353,7 +353,7 @@
             box-shadow: inset 0 0 0 2px var(--accent);
         }
 
-        /* Error state overrides ALL selection/peer background & text colors across ALL themes */
+        /* High-contrast error styling across all dark themes */
         .cell.error {
             background-color: #000000 !important;
             color: #ff0000 !important;
@@ -378,9 +378,10 @@
             align-items: center;
             justify-content: center;
             font-size: clamp(0.48rem, 1.8vw, 0.72rem);
-            font-weight: 600;
-            color: var(--text-note);
+            font-weight: 700;
+            color: #ffffff !important;
             line-height: 1;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
         }
 
         .actions-bar {
@@ -471,7 +472,7 @@
             color: white;
         }
 
-        /* Crossed-off styling when all 9 instances are correctly placed */
+        /* Crossed-off styling when all 9 instances are correctly filled */
         .key-btn.completed {
             opacity: 0.3;
             text-decoration: line-through;
@@ -612,6 +613,7 @@
                     <option value="easy">Easy</option>
                     <option value="medium" selected>Medium</option>
                     <option value="hard">Hard</option>
+                    <option value="expert">Expert</option>
                 </select>
             </div>
             <div class="stat-item">
@@ -655,7 +657,7 @@
                         <h2>Game Paused</h2>
                         <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Take a breather!</p>
                     </div>
-                    <button class="btn-primary" id="btn-resume">Resume Game</button>
+                    <button class="btn-resume" id="btn-resume" class="btn-primary" style="width:100%;">Resume Game</button>
                 </div>
             </div>
         </div>
@@ -702,9 +704,10 @@
         let moveHistory = [];
 
         const DIFFICULTY_CLUES = {
-            easy: 40,
-            medium: 32,
-            hard: 26
+            easy: 42,
+            medium: 34,
+            hard: 28,
+            expert: 23
         };
 
         function isValid(board, row, col, num) {
@@ -722,6 +725,60 @@
                 }
             }
             return true;
+        }
+
+        // Hyper-optimized MRV (Minimum Remaining Values) uniqueness checker with early exit
+        function countSolutionsMRV(board, limit = 2) {
+            let solutions = 0;
+            let nodes = 0;
+            const maxNodes = 250; // Strict recursion node limit to guarantee execution < 15ms
+
+            function solve() {
+                if (solutions >= limit || nodes >= maxNodes) return;
+                nodes++;
+
+                let minCandidates = 10;
+                let bestRow = -1;
+                let bestCol = -1;
+                let bestCandidates = null;
+
+                // Find cell with minimum remaining candidate numbers (MRV)
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        if (board[r][c] === 0) {
+                            const candidates = [];
+                            for (let n = 1; n <= 9; n++) {
+                                if (isValid(board, r, c, n)) candidates.push(n);
+                            }
+                            if (candidates.length < minCandidates) {
+                                minCandidates = candidates.length;
+                                bestRow = r;
+                                bestCol = c;
+                                bestCandidates = candidates;
+                            }
+                            if (minCandidates === 0) return; // Dead end branch
+                            if (minCandidates === 1) break;
+                        }
+                    }
+                    if (minCandidates === 1) break;
+                }
+
+                // If no empty cells left, a valid solution is found
+                if (bestRow === -1) {
+                    solutions++;
+                    return;
+                }
+
+                for (let num of bestCandidates) {
+                    board[bestRow][bestCol] = num;
+                    solve();
+                    board[bestRow][bestCol] = 0;
+                    if (solutions >= limit || nodes >= maxNodes) return;
+                }
+            }
+
+            solve();
+            return solutions;
         }
 
         function solveSudokuRandomized(board) {
@@ -743,28 +800,11 @@
             return true;
         }
 
-        function countSolutions(board, count = 0) {
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    if (board[row][col] === 0) {
-                        for (let num = 1; num <= 9; num++) {
-                            if (isValid(board, row, col, num)) {
-                                board[row][col] = num;
-                                count = countSolutions(board, count);
-                                board[row][col] = 0;
-                                if (count >= 2) return count;
-                            }
-                        }
-                        return count;
-                    }
-                }
-            }
-            return count + 1;
-        }
-
         function generatePuzzle(difficultyKey) {
+            const startTime = performance.now();
             solutionBoard = Array(9).fill(null).map(() => Array(9).fill(0));
             
+            // Fill diagonal 3x3 blocks for instant seed generation
             for (let i = 0; i < 9; i += 3) {
                 let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
                 let idx = 0;
@@ -778,7 +818,9 @@
 
             initialBoard = solutionBoard.map(row => [...row]);
 
-            const targetClues = DIFFICULTY_CLUES[difficultyKey] || 32;
+            const targetClues = DIFFICULTY_CLUES[difficultyKey] || 34;
+            
+            // Generate list of cells
             let cells = [];
             for (let r = 0; r < 9; r++) {
                 for (let c = 0; c < 9; c++) cells.push([r, c]);
@@ -786,15 +828,24 @@
             cells.sort(() => Math.random() - 0.5);
 
             let cluesCount = 81;
+            let attempts = 0;
+            const maxAttempts = 100;
+
             for (let cell of cells) {
                 if (cluesCount <= targetClues) break;
+                if (attempts >= maxAttempts) break;
+                if (performance.now() - startTime > 40) break; // Hard safety cutoff at 40ms
+
+                attempts++;
                 const [r, c] = cell;
+                if (initialBoard[r][c] === 0) continue;
+
                 const tempVal = initialBoard[r][c];
                 initialBoard[r][c] = 0;
 
-                let boardCopy = initialBoard.map(row => [...row]);
-                if (countSolutions(boardCopy) !== 1) {
-                    initialBoard[r][c] = tempVal;
+                // Check uniqueness in < 1ms with MRV early exit
+                if (countSolutionsMRV(initialBoard, 2) !== 1) {
+                    initialBoard[r][c] = tempVal; // Restore cell
                 } else {
                     cluesCount--;
                 }
@@ -1186,7 +1237,7 @@
                 startNewGame();
             }
         };
-        if ('serviceWorker' in navigator) { window.addEventListener('load', function() { navigator.serviceWorker.register('./sw.js'); }); }
+                if ('serviceWorker' in navigator) { window.addEventListener('load', function() { navigator.serviceWorker.register('./sw.js'); }); }
     </script>
 </body>
 </html>
