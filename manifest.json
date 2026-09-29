@@ -19,5 +19,56 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "ssblue.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Blue Theme"
+    },
+    {
+      "src": "ssyellow.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Yellow Theme"
+    },
+    {
+      "src": "ssred.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Red Theme"
+    },
+    {
+      "src": "ssorange.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Orange Theme"
+    },
+    {
+      "src": "ssgreen.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Green Theme"
+    },
+    {
+      "src": "sspurple.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dark Purple Theme"
+    },
+    {
+      "src": "ssblack.png",
+      "sizes": "968x1454",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Black Theme"
+    }
   ]
 }
