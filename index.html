@@ -15,7 +15,7 @@
             --bg-peer: #1e2e4a;
             --bg-same-num: #1e3a8a;
             --text-main: #f8fafc;
-            --text-given: #e2e8f0;
+            --text-given: #cbd5e1;
             --text-user: #60a5fa;
             --text-muted: #64748b;
             --text-note: #94a3b8;
@@ -24,8 +24,6 @@
             --border-box: #64748b;
             --accent: #3b82f6;
             --accent-glow: rgba(59, 130, 246, 0.4);
-            --error-color: #ef4444;
-            --error-bg: #451a1a;
         }
 
         [data-theme="dark-yellow"] {
@@ -47,8 +45,6 @@
             --border-box: #b45309;
             --accent: #f59e0b;
             --accent-glow: rgba(245, 158, 11, 0.4);
-            --error-color: #f87171;
-            --error-bg: #421515;
         }
 
         [data-theme="dark-red"] {
@@ -70,8 +66,6 @@
             --border-box: #be123c;
             --accent: #ef4444;
             --accent-glow: rgba(239, 68, 68, 0.4);
-            --error-color: #fb7185;
-            --error-bg: #4c0519;
         }
 
         [data-theme="dark-orange"] {
@@ -93,8 +87,6 @@
             --border-box: #c2410c;
             --accent: #f97316;
             --accent-glow: rgba(249, 115, 22, 0.4);
-            --error-color: #ef4444;
-            --error-bg: #451a1a;
         }
 
         [data-theme="dark-green"] {
@@ -116,8 +108,6 @@
             --border-box: #059669;
             --accent: #10b981;
             --accent-glow: rgba(16, 185, 129, 0.4);
-            --error-color: #f87171;
-            --error-bg: #421515;
         }
 
         [data-theme="dark-purple"] {
@@ -139,31 +129,27 @@
             --border-box: #7e22ce;
             --accent: #a855f7;
             --accent-glow: rgba(168, 85, 247, 0.4);
-            --error-color: #f87171;
-            --error-bg: #421515;
         }
 
         [data-theme="black"] {
             --bg-main: #000000;
             --bg-card: #0d0d0d;
-            --bg-cell: #161616;
-            --bg-cell-given: #222222;
-            --bg-hover: #2e2e2e;
-            --bg-selected: #e5e5e5;
-            --bg-peer: #1f1f1f;
-            --bg-same-num: #333333;
+            --bg-cell: #121212;
+            --bg-cell-given: #1a1a1a;
+            --bg-hover: #262626;
+            --bg-selected: #333333;
+            --bg-peer: #1c1c1c;
+            --bg-same-num: #282828;
             --text-main: #ffffff;
-            --text-given: #d4d4d4;
-            --text-user: #38bdf8;
+            --text-given: #888888;  /* Given numbers grey for contrast */
+            --text-user: #ffffff;   /* User-placed numbers full white */
             --text-muted: #737373;
             --text-note: #a3a3a3;
             --border-subtle: #262626;
             --border-grid: #404040;
-            --border-box: #737373;
-            --accent: #f5f5f5;
+            --border-box: #666666;
+            --accent: #ffffff;
             --accent-glow: rgba(255, 255, 255, 0.3);
-            --error-color: #ef4444;
-            --error-bg: #3f1212;
         }
 
         * {
@@ -210,7 +196,6 @@
             gap: 10px;
         }
 
-        /* Logo Triangle of S's styling */
         .logo-triangle-svg {
             width: 38px;
             height: 34px;
@@ -342,7 +327,6 @@
             position: relative;
         }
 
-        /* 3x3 Box Thick Borders */
         .cell[data-col="2"], .cell[data-col="5"] {
             border-right: 2px solid var(--border-box);
         }
@@ -366,21 +350,19 @@
 
         .cell.selected {
             background-color: var(--bg-selected) !important;
-            color: #ffffff !important;
-            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 0 0 2px var(--accent);
         }
 
-        [data-theme="black"] .cell.selected {
-            color: #000000 !important;
-        }
-
+        /* Error state overrides ALL selection/peer background & text colors across ALL themes */
         .cell.error {
-            background-color: var(--error-bg) !important;
-            color: var(--error-color) !important;
+            background-color: #000000 !important;
+            color: #ff0000 !important;
+            border: 2px solid #ff0000 !important;
+            font-weight: 800;
             animation: shake 0.25s ease-in-out;
+            z-index: 2;
         }
 
-        /* Pencil notes subgrid inside cells */
         .notes-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -472,20 +454,33 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            position: relative;
         }
 
-        .key-btn:hover {
+        .key-btn:hover:not(.completed) {
             background: var(--bg-hover);
             border-color: var(--accent);
             color: var(--text-user);
         }
 
-        .key-btn:active {
+        .key-btn:active:not(.completed) {
             transform: scale(0.92);
             background: var(--accent);
             color: white;
+        }
+
+        /* Crossed-off styling when all 9 instances are correctly placed */
+        .key-btn.completed {
+            opacity: 0.3;
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--text-muted);
+            background: var(--bg-main);
+            border-color: transparent;
+            box-shadow: none;
+            cursor: default;
         }
 
         .btn-primary {
@@ -515,7 +510,6 @@
             transform: translateY(1px);
         }
 
-        /* Modal Overlays (Victory & Pause) */
         .modal-overlay {
             position: absolute;
             inset: 0;
@@ -586,10 +580,9 @@
 <body data-theme="dark-blue">
 
     <div class="app-container">
-        <!-- Header -->
+        <!-- Header with Triangle 'S' SVG Logo -->
         <header>
             <div class="brand">
-                <!-- Triangle of 3 'S's SVG Logo -->
                 <svg class="logo-triangle-svg" viewBox="0 0 80 70" aria-label="Super Simple Sudoku Logo">
                     <polygon points="40,12 16,56 64,56" fill="none" stroke="var(--accent)" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="3 2" />
                     <text x="40" y="16" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="900" font-size="19" fill="var(--accent)">S</text>
@@ -600,7 +593,7 @@
             </div>
             <div class="theme-select-wrapper">
                 <select id="theme-select" aria-label="Select Theme">
-                    <option value="dark-blue" selected>Dark Blue</option>
+                    <option value="dark-blue">Dark Blue</option>
                     <option value="dark-yellow">Dark Yellow</option>
                     <option value="dark-red">Dark Red</option>
                     <option value="dark-orange">Dark Orange</option>
@@ -611,7 +604,7 @@
             </div>
         </header>
 
-        <!-- Stats & Controls Bar -->
+        <!-- Game Stats Bar -->
         <div class="stats-bar">
             <div class="stat-item">
                 <span class="stat-label">Difficulty</span>
@@ -619,7 +612,6 @@
                     <option value="easy">Easy</option>
                     <option value="medium" selected>Medium</option>
                     <option value="hard">Hard</option>
-                    <option value="expert">Expert</option>
                 </select>
             </div>
             <div class="stat-item">
@@ -688,7 +680,7 @@
             </button>
         </div>
 
-        <!-- On-Screen Keypad -->
+        <!-- Keypad -->
         <div class="keypad" id="keypad"></div>
 
         <!-- New Game Button -->
@@ -696,7 +688,6 @@
     </div>
 
     <script>
-        // Game State Variables
         let solutionBoard = Array(9).fill(null).map(() => Array(9).fill(0));
         let initialBoard = Array(9).fill(null).map(() => Array(9).fill(0));
         let currentBoard = Array(9).fill(null).map(() => Array(9).fill(0));
@@ -711,10 +702,9 @@
         let moveHistory = [];
 
         const DIFFICULTY_CLUES = {
-            easy: 42,
-            medium: 33,
-            hard: 26,
-            expert: 22
+            easy: 40,
+            medium: 32,
+            hard: 26
         };
 
         function isValid(board, row, col, num) {
@@ -775,7 +765,6 @@
         function generatePuzzle(difficultyKey) {
             solutionBoard = Array(9).fill(null).map(() => Array(9).fill(0));
             
-            // Pre-fill diagonal 3x3 boxes for fast puzzle generation
             for (let i = 0; i < 9; i += 3) {
                 let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
                 let idx = 0;
@@ -789,7 +778,7 @@
 
             initialBoard = solutionBoard.map(row => [...row]);
 
-            const targetClues = DIFFICULTY_CLUES[difficultyKey] || 33;
+            const targetClues = DIFFICULTY_CLUES[difficultyKey] || 32;
             let cells = [];
             for (let r = 0; r < 9; r++) {
                 for (let c = 0; c < 9; c++) cells.push([r, c]);
@@ -849,8 +838,33 @@
                 const btn = document.createElement('button');
                 btn.className = 'key-btn';
                 btn.textContent = i;
+                btn.dataset.num = i;
                 btn.addEventListener('click', () => handleInput(i));
                 keypadEl.appendChild(btn);
+            }
+        }
+
+        function checkKeypadCompletion() {
+            const counts = Array(10).fill(0);
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    const val = currentBoard[r][c];
+                    if (val >= 1 && val <= 9 && val === solutionBoard[r][c]) {
+                        counts[val]++;
+                    }
+                }
+            }
+
+            const keyBtns = keypadEl.children;
+            for (let i = 1; i <= 9; i++) {
+                const btn = keyBtns[i - 1];
+                if (btn) {
+                    if (counts[i] === 9) {
+                        btn.classList.add('completed');
+                    } else {
+                        btn.classList.remove('completed');
+                    }
+                }
             }
         }
 
@@ -906,6 +920,9 @@
                     }
                 }
             }
+
+            checkKeypadCompletion();
+            saveGameStateLocal();
         }
 
         function selectCell(r, c) {
@@ -1022,7 +1039,6 @@
 
         function startTimer() {
             clearInterval(timerInterval);
-            secondsElapsed = 0;
             isPaused = false;
             updateTimerDisplay();
             timerInterval = setInterval(() => {
@@ -1061,6 +1077,7 @@
             const timeStr = document.getElementById('timer-display').textContent;
             document.getElementById('victory-stats').textContent = `Completed in ${timeStr} with ${mistakes} mistake(s).`;
             document.getElementById('victory-modal').classList.add('active');
+            localStorage.removeItem('sss_saved_game');
             return true;
         }
 
@@ -1071,12 +1088,71 @@
 
         function switchTheme(themeName) {
             document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('sss_theme', themeName);
+        }
+
+        function saveGameStateLocal() {
+            try {
+                const serializedNotes = notesBoard.map(row => 
+                    row.map(cellSet => Array.from(cellSet))
+                );
+                const gameState = {
+                    solutionBoard,
+                    initialBoard,
+                    currentBoard,
+                    notesBoard: serializedNotes,
+                    mistakes,
+                    secondsElapsed,
+                    difficulty: document.getElementById('difficulty-select').value
+                };
+                localStorage.setItem('sss_saved_game', JSON.stringify(gameState));
+            } catch (e) {
+                console.error("Local storage error:", e);
+            }
+        }
+
+        function loadSavedGameState() {
+            try {
+                const savedTheme = localStorage.getItem('sss_theme');
+                if (savedTheme) {
+                    switchTheme(savedTheme);
+                    document.getElementById('theme-select').value = savedTheme;
+                }
+
+                const savedGameRaw = localStorage.getItem('sss_saved_game');
+                if (!savedGameRaw) return false;
+
+                const data = JSON.parse(savedGameRaw);
+                if (!data.solutionBoard || !data.currentBoard) return false;
+
+                solutionBoard = data.solutionBoard;
+                initialBoard = data.initialBoard;
+                currentBoard = data.currentBoard;
+                notesBoard = data.notesBoard.map(row => 
+                    row.map(cellArr => new Set(cellArr))
+                );
+                mistakes = data.mistakes || 0;
+                secondsElapsed = data.secondsElapsed || 0;
+                
+                document.getElementById('mistakes-display').textContent = mistakes;
+                if (data.difficulty) {
+                    document.getElementById('difficulty-select').value = data.difficulty;
+                }
+
+                updateDOM();
+                startTimer();
+                return true;
+            } catch (e) {
+                console.error("Failed to restore saved game:", e);
+                return false;
+            }
         }
 
         function startNewGame() {
             const diff = document.getElementById('difficulty-select').value;
             
             mistakes = 0;
+            secondsElapsed = 0;
             document.getElementById('mistakes-display').textContent = mistakes;
             moveHistory = [];
             selectedCell = null;
@@ -1088,7 +1164,6 @@
             startTimer();
         }
 
-        // Attach Event Listeners
         document.getElementById('btn-erase').addEventListener('click', eraseCell);
         document.getElementById('btn-notes').addEventListener('click', toggleNoteMode);
         document.getElementById('btn-hint').addEventListener('click', giveHint);
@@ -1103,11 +1178,13 @@
             switchTheme(e.target.value);
         });
 
-        // Initialize on Load
         window.onload = function() {
             createGridDOM();
             createKeypadDOM();
-            startNewGame();
+            
+            if (!loadSavedGameState()) {
+                startNewGame();
+            }
         };
     </script>
 </body>
