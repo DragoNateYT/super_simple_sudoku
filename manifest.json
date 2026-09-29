@@ -1,11 +1,18 @@
 {
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
   "name": "Super Simple Sudoku",
+  "orientation": "any",
+  "scope": "/",
   "short_name": "SSS",
   "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "description": "A super simple Sudoku app for you to play at your own leisure to your heart's content. No tracking, no goals, just play as much or as little as you want!",
+  "lang": "en",
+  "categories": [
+    "games"
+  ]
   "icons": [
     {
       "src": "icon.png",
@@ -13,9 +20,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
-    "lang": "en",
-  "categories": [
-    "games"
   ]
 }
