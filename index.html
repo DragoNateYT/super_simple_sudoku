@@ -188,26 +188,92 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 4px;
+            gap: 8px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .logo-triangle-svg {
-            width: 38px;
-            height: 34px;
+            width: 32px;
+            height: 30px;
             filter: drop-shadow(0 0 6px var(--accent-glow));
             transition: filter 0.25s ease;
         }
 
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Compact Ko-fi Widget Overrides */
+        .kofi-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kofi-wrapper .btn-container {
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .kofi-button {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) !important;
+            border-radius: 6px !important;
+            padding: 0 8px !important;
+            height: 24px !important;
+            line-height: 1 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            background-color: #18661f !important;
+            transition: all 0.15s ease !important;
+            box-sizing: border-box !important;
+        }
+
+        .kofi-button:hover {
+            opacity: 0.92 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .kofi-button .kofitext {
+            font-size: 0.62rem !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            line-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            letter-spacing: -0.01em !important;
+        }
+
+        .kofi-button img.kofiimg {
+            height: 11px !important;
+            width: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: inline-block !important;
+            vertical-align: middle !important;
         }
 
         .theme-select-wrapper select {
@@ -215,8 +281,8 @@
             color: var(--text-main);
             border: 1px solid var(--border-subtle);
             border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 0.8rem;
+            padding: 5px 8px;
+            font-size: 0.78rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
@@ -286,7 +352,7 @@
             cursor: pointer;
         }
 
-        /* Compact square New Game button with vibrant accent styling */
+        /* Vibrant square New Game button next to difficulty */
         .btn-icon-square {
             background: var(--accent);
             border: 1px solid var(--accent);
@@ -618,13 +684,29 @@
             20%, 60% { transform: translateX(-4px); }
             40%, 80% { transform: translateX(4px); }
         }
+
+        @media (max-width: 380px) {
+            h1 {
+                font-size: 0.95rem;
+            }
+            .kofi-button {
+                padding: 0 5px !important;
+                height: 22px !important;
+            }
+            .kofi-button .kofitext {
+                font-size: 0.58rem !important;
+            }
+            .kofi-button img.kofiimg {
+                height: 10px !important;
+            }
+        }
     </style>
     <link rel="manifest" href="manifest.json">
 </head>
 <body data-theme="dark-blue">
 
     <div class="app-container">
-        <!-- Header with Triangle 'S' SVG Logo -->
+        <!-- Header with Triangle 'S' SVG Logo, Ko-fi Support Button, and Theme Selector -->
         <header>
             <div class="brand">
                 <svg class="logo-triangle-svg" viewBox="0 0 80 70" aria-label="Super Simple Sudoku Logo">
@@ -635,16 +717,34 @@
                 </svg>
                 <h1>Super Simple Sudoku</h1>
             </div>
-            <div class="theme-select-wrapper">
-                <select id="theme-select" aria-label="Select Theme">
-                    <option value="dark-blue">Blue</option>
-                    <option value="dark-yellow">Yellow</option>
-                    <option value="dark-red">Red</option>
-                    <option value="dark-orange">Orange</option>
-                    <option value="dark-green">Green</option>
-                    <option value="dark-purple">Purple</option>
-                    <option value="black">Black</option>
-                </select>
+
+            <div class="header-actions">
+                <!-- Compact Ko-fi Support Button Widget -->
+                <div class="kofi-wrapper">
+                    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+                    <script type='text/javascript'>
+                        try {
+                            if (typeof kofiwidget2 !== 'undefined') {
+                                kofiwidget2.init('Support me on Ko-fi', '#18661f', 'E1E777QXR');
+                                kofiwidget2.draw();
+                            }
+                        } catch(e) {
+                            console.log('Ko-fi widget omitted');
+                        }
+                    </script>
+                </div>
+
+                <div class="theme-select-wrapper">
+                    <select id="theme-select" aria-label="Select Theme">
+                        <option value="dark-blue">Blue</option>
+                        <option value="dark-yellow">Yellow</option>
+                        <option value="dark-red">Red</option>
+                        <option value="dark-orange">Orange</option>
+                        <option value="dark-green">Green</option>
+                        <option value="dark-purple">Purple</option>
+                        <option value="black">Black</option>
+                    </select>
+                </div>
             </div>
         </header>
 
@@ -660,7 +760,7 @@
                         <option value="expert">Expert</option>
                     </select>
                 </div>
-                <!-- Compact square New Game refresh button safely away from keypad -->
+                <!-- Compact square New Game refresh button -->
                 <button class="btn-icon-square" id="btn-new-game" title="New Game" aria-label="New Game">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="23 4 23 10 17 10"></polyline>
@@ -1276,6 +1376,7 @@
             }
         };
 
+        // Service Worker registration with origin protocol check
         if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('./sw.js')
