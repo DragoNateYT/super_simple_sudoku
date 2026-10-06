@@ -166,21 +166,22 @@
             color: var(--text-main);
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            padding: 6px 10px;
             overflow-x: hidden;
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
         .app-container {
             width: 100%;
-            max-width: 460px;
+            max-width: 420px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 8px;
         }
 
         header {
@@ -189,19 +190,19 @@
             align-items: center;
             justify-content: center;
             padding: 0 4px;
-            gap: 10px;
+            gap: 5px;
         }
 
         .brand {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             width: 100%;
         }
 
         h1 {
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: var(--text-main);
@@ -213,117 +214,84 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            gap: 8px;
-        }
-
-        /* Compact Ko-fi Widget Overrides */
-        .kofi-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .logo-triangle-svg {
-            width: 32px;
-            height: 30px;
-            filter: drop-shadow(0 0 6px var(--accent-glow));
-            transition: filter 0.25s ease;
-        }
-
-        h1 {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--text-main);
-            white-space: nowrap;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
             gap: 6px;
         }
 
-        /* Compact Ko-fi Widget Overrides */
-        .kofi-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .kofi-wrapper .btn-container {
-            margin: 0 !important;
-            padding: 0 !important;
+        /* High-specificity Ko-fi Widget Overrides */
+        html body .kofi-wrapper {
             display: flex !important;
             align-items: center !important;
+            justify-content: flex-start !important;
+            height: 26px !important;
         }
 
-        .kofi-button {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0) !important;
+        html body .kofi-wrapper *,
+        html body .kofi-wrapper .btn-container,
+        html body .kofi-wrapper .kofi-button,
+        html body .kofi-wrapper a.kofi-button {
+            box-shadow: none !important;
+            height: 26px !important;
+            min-height: 26px !important;
+            max-height: 26px !important;
+            line-height: 26px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 0.2rem !important;
             border-radius: 6px !important;
-            padding: 0 5px !important;
-            height: 24px !important;
-            width: 100px !important;
-            line-height: 1 !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
             text-decoration: none !important;
-            background-color: #18661f !important;
-            transition: all 0.15s ease !important;
+            vertical-align: middle !important;
             box-sizing: border-box !important;
         }
 
-        .kofi-button:hover {
-            opacity: 0.82 !important;
-            transform: translateY(-1px) !important;
-        }
-
-        .kofi-button .kofitext {
-            font-size: 0.62rem !important;
-            font-weight: 700 !important;
-            color: #ffffff !important;
-            display: flex !important;
+        html body .kofi-wrapper .kofi-button,
+        html body .kofi-wrapper a.kofi-button {
+            display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 2px !important;
-            line-height: 1 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            letter-spacing: -0.01em !important;
+            padding: 0 8px !important;
+            overflow: hidden !important;
         }
 
-        .kofi-button img.kofiimg {
-            height: 11px !important;
+        html body .kofi-wrapper .kofitext,
+        html body .kofi-wrapper span.kofitext {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 26px !important;
+            line-height: 26px !important;
+            font-size: 0.7rem !important;
+            font-weight: 600 !important;
+            gap: 4px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            vertical-align: middle !important;
+            transform: none !important;
+        }
+
+        html body .kofi-wrapper img.kofiimg,
+        html body .kofi-wrapper img {
+            height: 12px !important;
             width: auto !important;
             margin: 0 !important;
             padding: 0 !important;
             display: inline-block !important;
             vertical-align: middle !important;
+            position: relative !important;
+            top: -1px !important;
         }
 
-        .theme-select-wrapper select {
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 5px 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
-        .theme-select-wrapper select:hover {
-            border-color: var(--accent);
+        .logo-triangle-svg {
+            width: 24px;
+            height: 22px;
+            filter: drop-shadow(0 0 6px var(--accent-glow));
+            transition: filter 0.25s ease;
         }
 
         .stats-bar {
@@ -332,8 +300,8 @@
             align-items: center;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 8px 12px;
+            border-radius: 10px;
+            padding: 5px 10px;
             transition: all 0.25s ease;
         }
 
@@ -373,16 +341,23 @@
             font-variant-numeric: tabular-nums;
         }
 
-        .difficulty-select {
+        .difficulty-select,
+        #theme-select {
             background: var(--bg-cell);
             color: var(--text-main);
             border: 1px solid var(--border-subtle);
             border-radius: 6px;
-            padding: 4px 6px;
-            font-size: 0.82rem;
+            padding: 3px 6px;
+            font-size: 0.78rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .difficulty-select:hover,
+        #theme-select:hover {
+            border-color: var(--accent);
         }
 
         /* Vibrant square New Game button next to difficulty */
@@ -390,9 +365,9 @@
             background: var(--accent);
             border: 1px solid var(--accent);
             color: #ffffff;
-            border-radius: 8px;
-            width: 32px;
-            height: 32px;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -530,22 +505,22 @@
         .actions-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-action {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
-            border-radius: 10px;
-            padding: 8px 4px;
+            border-radius: 8px;
+            padding: 6px 3px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 2px;
             cursor: pointer;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 600;
             transition: all 0.15s ease;
         }
@@ -583,16 +558,16 @@
         .keypad {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
 
         .key-btn {
-            aspect-ratio: 1 / 1.1;
+            aspect-ratio: 1 / 1;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: 10px;
+            border-radius: 8px;
             color: var(--text-main);
-            font-size: clamp(1.05rem, 4vw, 1.35rem);
+            font-size: clamp(0.95rem, 3.8vw, 1.25rem);
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -758,7 +733,7 @@
                     <script type='text/javascript'>
                         try {
                             if (typeof kofiwidget2 !== 'undefined') {
-                                kofiwidget2.init('Support me on Ko-fi', '#18661f', 'dragonate');
+                                kofiwidget2.init('Donate on Ko-fi', '#18661f', 'dragonate');
                                 kofiwidget2.draw();
                             }
                         } catch(e) {
